@@ -1,6 +1,8 @@
 # project-frontend-l4-server
 
-[![github action status](https://github.com/hexlet-components/projects-frontend-l4-server/workflows/Node%20CI/badge.svg)](../../actions)
+[![Node CI](https://github.com/Tati92-L/frontend-project-lvl4/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Tati92-L/frontend-project-lvl4/actions/workflows/hexlet-check.yml)
+[![Actions Status](https://github.com/Tati92-L/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/Tati92-L/frontend-project-lvl4/actions)
+
 
 ## Requirements
 
