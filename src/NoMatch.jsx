@@ -1,14 +1,13 @@
 import React from 'react';
 
 export default function NoMatch() {
-    let location = useLocation();
   
     return (
-      <div>
+      <div className='text-center'>
         <h3>
-          No match for <code>{location.pathname}</code>
+        Not Found
         </h3>
-        <p>404 Not Found</p>
+        <img className='img-fluid' src='https://cdn2.hexlet.io/assets/error-pages/404-34f20d4d98c81c575950c89d4c49027513d0bb3f6adbb3ed85ca0923496f65df.png'></img>
       </div>
     );
   }
