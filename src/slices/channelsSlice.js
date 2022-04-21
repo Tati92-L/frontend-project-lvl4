@@ -1,20 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+
+const channelsAdapter = createEntityAdapter();
+
+const initialState = channelsAdapter.getInitialState();
 
 const channelsSlice = createSlice({
   name: 'channels',
-  initialState: {
-    channels: [],
-  },
+  initialState,
   reducers: {
-    addChannel: (state, { payload: { channel } }) => {
-      state.channels = [channel, ...state.messages];
-    },
-    removeChanell: (state, { payload: { id } }) => {
-      state.channels = state.channels.filter((с) => с.id !== id);
-    },
+    addChannel: channelsAdapter.addOne,
+    addChannels: channelsAdapter.addMany,
+    removeChannel: (state, { payload }) => channelsAdapter.removeOne(state, payload.id),
+    renameChannel: (state, { payload }) => channelsAdapter.updateOne(state, {
+      id: payload.id, changes: { name: payload.name },
+    }),
   },
 });
 
-export const { addChannel, removeChannel } = channelsSlice.actions;
+export const selectors = channelsAdapter.getSelectors((state) => state.channels);
+
+export const { actions } = channelsSlice;
 
 export default channelsSlice.reducer;
