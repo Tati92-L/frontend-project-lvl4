@@ -1,12 +1,11 @@
 import React from 'react';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 function AuthButton() {
   const { loggedIn, logOut } = useAuth();
   const location = useLocation();
-  console.log('login', loggedIn);
   return loggedIn ? (
     <Button onClick={logOut}>Выйти</Button>
   ) : (

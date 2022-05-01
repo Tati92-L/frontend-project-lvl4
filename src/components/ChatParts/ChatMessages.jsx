@@ -1,24 +1,85 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Col, Button, Form } from 'react-bootstrap';
 
-export default function ChatMessages() {
+export default function ChatMessages({
+  messages, sendMessage, currentChannelId, currentChannelName,
+}) {
+  const [text, setText] = useState('');
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  const lastMessageRef = useRef();
+  const inputRef = useRef();
+
+  const getUsername = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'));
+    if (userId) {
+      return userId.username;
+    }
+
+    return null;
+  };
+
+  const handleChangeText = (e) => {
+    const messageText = e.target.value;
+    setText(messageText);
+    setBtnDisabled(!(messageText.length > 0));
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    sendMessage(text, currentChannelId, getUsername());
+    setText('');
+    setBtnDisabled(true);
+  };
+
+  useEffect(() => {
+    const scrollToBottom = async () => {
+      if (messages.length > 0) {
+        lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    scrollToBottom();
+  }, [messages]);
+
   return (
-    <Col className="col p-0 h-100">
+    <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># general</b>
+            <b>
+              #
+              {currentChannelName}
+            </b>
           </p>
-          <span className="text-muted">135 сообщений</span>
+          <span className="text-muted">
+            { messages.length } сообщений
+          </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          Сообщения
+          <div id="message-box" className="overflow-auto px-5">
+            {
+            messages.map((message, index) => (
+              <div
+                className="message mb-2"
+                key={message.id}
+                ref={index === (messages.length - 1) ? lastMessageRef : null}
+              >
+                <b>
+                  {message.author}
+                  :
+                </b>
+                {' '}
+                {message.messageText}
+              </div>
+            ))
+          }
+          </div>
         </div>
         <div className="mt-auto px-5 py-3">
-          <Form className="py-1 border rounded-2">
-            <Form.Group className="input-group has-validation">
-              <Form.Control name="body" type="text" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" aria-label="Новое сообщение" />
-              <Button type="submit" disabled className="btn btn-group-vertical">
+          <Form onSubmit={handleSendMessage} className="py-1 border rounded-2">
+            <Form.Group className="input-group has-validation d-flex">
+              <Form.Control value={text} onChange={handleChangeText} type="text" placeholder="Введите сообщение..." className="border-0 p-0 ps-2" aria-label="Новое сообщение" ref={inputRef} />
+              <Button type="submit" disabled={btnDisabled} className="btn btn-group-vertical">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
                   <path
                     fillRule="evenodd"

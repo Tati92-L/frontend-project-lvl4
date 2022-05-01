@@ -2,7 +2,7 @@ import React, { createContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as messageActions } from '../slices/messagesSlice.js';
 import { actions as channelActions } from '../slices/channelsSlice.js';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import logger from '../../lib/logger.js';
 
 export const SocketContext = createContext(null);
