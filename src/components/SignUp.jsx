@@ -1,19 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { useFormik } from 'formik';
-import {
-  Button, Container, Form, Row, Col, Card,
-} from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Card } from 'react-bootstrap';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
-
-const userSchema = object().shape({
-  username: string().min(3, 'Too Short!').max(20, 'Too Long!').required('Required'),
-  password: string().min(6, 'Too Short!').required('Required'),
-  confirmPassword: string().oneOf(['password', null]).required('Required'),
-});
+import signUpImg from '../img/signup.js';
 
 export default function SignUp() {
   const [authFailed, setAuthFailed] = useState(false);
@@ -21,9 +15,17 @@ export default function SignUp() {
   const location = useLocation();
   const navigate = useNavigate();
   const auth = useAuth();
+  const { t } = useTranslation('translation', { keyPrefix: 'signUpPage' });
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const userSchema = object().shape({
+    username: string().min(3, t('signUpValidation.nameMinValid')).max(20, t('signUpValidation.nameMaxValid')).required(t('signUpValidation.requiredName')),
+    password: string().min(6, t('signUpValidation.passwordMinValid')).required(t('signUpValidation.requiredPassword')),
+    confirmPassword: string().oneOf(['password', null], t('signUpValidation.passwordMatch')),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -35,13 +37,12 @@ export default function SignUp() {
     userSchema,
 
     onSubmit: async (values) => {
-      setAuthFailed(false);
-
       try {
         const response = await axios.post(routes.signUpPath(), values);
         if (response.status === 200) {
           localStorage.setItem('userId', JSON.stringify(response.data));
           auth.logIn();
+          setAuthFailed(false);
           const { from } = location.state || { from: { pathname: '/' } };
           navigate(from);
         }
@@ -60,65 +61,86 @@ export default function SignUp() {
 
   return (
     <Container className="h-100" fluid>
-      <Row className="justify-content-center align-content-center h-100">
-        <Col className="col-12 col-md-8 col-xxl-6">
+      <Row className="row justify-content-center align-content-center h-100">
+        <Col xs md="8" xxl="6">
           <Card className="shadow-sm">
             <Card.Body>
               <Row className="p-5">
-                <Col md={6} className="class=" col-12 d-flex align-items-center justify-content-center>
-                  <img src="./images/signup.jpeg" className="rounded-circle" alt="Регистрация" />
+                <Col md={6} className="d-flex align-items-center justify-content-center">
+                  <img src={signUpImg} width="160px" className="rounded-circle" alt="Регистрация" />
                 </Col>
                 <Col>
                   <Card.Title className="text-center mb-4">
-                    <h1>Регистрация</h1>
+                    <h2>{t('signUpTitle')}</h2>
                   </Card.Title>
-                  <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+                  <Form className="form-floating" onSubmit={formik.handleSubmit}>
+                    {/* {
+                    registrationFailed
+                      ? <Alert variant="danger">{t('errorMessageSignUp')}</Alert>
+                      : null
+                  } */}
                     <Form.Group className="form-floating mb-3">
-                      <Form.Label htmlFor="username">Имя пользователя</Form.Label>
                       <Form.Control
+                        type="text"
                         onChange={formik.handleChange}
                         name="username"
-                        placeholder="Имя пользователя"
-                        className="form-control"
+                        placeholder={t('signUpForm.usernameSignUp')}
                         autoComplete="username"
                         required
                         id="username"
                         isInvalid={authFailed}
                         ref={inputRef}
                       />
+                      <Form.Label htmlFor="username">{t('signUpForm.usernameSignUp')}</Form.Label>
+
+                      {/* {formik.touched.username && formik.errors.username ? (
+                        <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
+                          {formik.errors.username}
+                        </Form.Control.Feedback>
+                      ) : null} */}
                     </Form.Group>
                     <Form.Group className="form-floating mb-3">
-                      <Form.Label htmlFor="password">Пароль</Form.Label>
                       <Form.Control
+                        type="password"
                         onChange={formik.handleChange}
                         name="password"
-                        placeholder="Password"
-                        className="form-control"
+                        placeholder={t('signUpForm.passwordSignUp')}
                         autoComplete="current-password"
                         required
                         id="password"
-                        type="password"
                         isInvalid={authFailed}
                       />
-                      <Form.Control.Feedback type="invalid">The username or password is incorrect</Form.Control.Feedback>
+                      <Form.Label htmlFor="password">{t('signUpForm.passwordSignUp')}</Form.Label>
+
+                      {/* {formik.touched.password && formik.errors.password ? (
+                        <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
+                          {formik.errors.password}
+                        </Form.Control.Feedback>
+                      ) : null} */}
+                      <Form.Control.Feedback type="invalid">{t('errorMessageSignUp')}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
-                      <Form.Label htmlFor="username">Подтвердите пароль</Form.Label>
                       <Form.Control
+                        type="password"
                         onChange={formik.handleChange}
                         name="confirmPassword"
-                        placeholder="Confirm password"
-                        className="form-control"
+                        placeholder={t('signUpForm.confirmPassword')}
                         autoComplete="confirm-password"
                         required
                         id="username"
                         isInvalid={authFailed}
                         ref={inputRef}
                       />
-                      <Form.Control.Feedback type="invalid">Имя пользователя или пароль некорректны</Form.Control.Feedback>
+                      <Form.Label htmlFor="username">{t('signUpForm.confirmPassword')}</Form.Label>
+
+                      {/* {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                        <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
+                          {formik.errors.confirmPassword}
+                        </Form.Control.Feedback>
+                      ) : null} */}
                     </Form.Group>
-                    <Button type="submit" variant="outline-primary" className="w-100">
-                      Зарегестрироваться
+                    <Button className="w-100" type="submit" variant="outline-primary">
+                      {t('signUpBtn')}
                     </Button>
                   </Form>
                 </Col>

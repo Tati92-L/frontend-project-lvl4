@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectors as channelSelectors } from '../slices/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
@@ -17,16 +18,14 @@ export default function AddChannelModal(props) {
   const [validationError, setValidationError] = useState('');
   // const { getUsername } = useAuth();
   const inputRef = useRef();
+  const { t } = useTranslation('translation', { keyPrefix: 'modalElements' });
 
   const channels = useSelector((state) => channelSelectors.selectAll(state));
   const channelsNames = channels.map((cnl) => cnl.name);
 
   const userSchema = object().shape({
-    body: string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required')
-      .notOneOf(channelsNames),
+    body: string().min(3, t('modalValid.modalMin')).max(20, t('modalValid.modalMax')).required(t('modalValid.modalRequired'))
+      .notOneOf(channelsNames, t('modalValid.uniqueChnlName')),
   });
 
   const formik = useFormik({
@@ -57,11 +56,10 @@ export default function AddChannelModal(props) {
     <Modal show>
       <form onSubmit={formik.handleSubmit}>
         <Modal.Header closeButton onHide={onHide}>
-          <Modal.Title className="h4">Добавить канал</Modal.Title>
+          <Modal.Title className="h4">{t('addChannelModal.modalTitle')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label className="visually-hidden">Имя канала</Form.Label>
             <Form.Control
               required
               ref={inputRef}
@@ -70,18 +68,20 @@ export default function AddChannelModal(props) {
               value={formik.values.body}
               data-testid="input-body"
               name="body"
+              placeholder={t('addChannelModal.modalInput')}
               isInvalid={fieldInvalid}
               className="mb-2"
             />
+            <Form.Label className="visually-hidden">{t('addChannelModal.inputLabel')}</Form.Label>
             <Form.Control.Feedback type="invalid">{validationError}</Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={() => onHide()}>
-            Отменить
+            {t('modalBtn.cancelBtn')}
           </Button>
-          <Button type="submit" variant="primary" >
-            Отправить
+          <Button type="submit" variant="primary">
+            {t('modalBtn.sendBtn')}
           </Button>
         </Modal.Footer>
       </form>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import useSocket from '../hooks/useSocket.jsx';
 import { selectors as channelSelectors } from '../slices/channelsSlice.js';
@@ -11,6 +12,7 @@ export default function RenameChannelModal(props) {
   const { id, name } = modalInfo.item;
   const { renameChannel } = useSocket();
   const inputRef = useRef();
+  const { t } = useTranslation('translation', { keyPrefix: 'modalElements' });
 
   const [fieldInvalid, setFieldInvalid] = useState(false);
   const [validationError, setValidationError] = useState(null);
@@ -20,10 +22,10 @@ export default function RenameChannelModal(props) {
 
   const userSchema = object().shape({
     body: string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required')
-      .notOneOf(channelsNames),
+      .min(3, (t('modalValid.modalMin')))
+      .max(20, (t('modalValid.modalMax')))
+      .required((t('modalValid.modalRequired')))
+      .notOneOf(channelsNames, t('modalValid.uniqueChnlName')),
   });
 
   const formik = useFormik({
@@ -53,21 +55,32 @@ export default function RenameChannelModal(props) {
     <Modal show>
       <form onSubmit={formik.handleSubmit}>
         <Modal.Header closeButton onHide={onHide}>
-          <Modal.Title className="h4">Переименовать канал</Modal.Title>
+          <Modal.Title className="h4">{t('renameModal.modalTitle')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Control name="body" data-testid="input-body" className="mb-2" value={formik.values.body} ref={inputRef} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={fieldInvalid} required />
-            <Form.Label className="visually-hidden">Имя канала</Form.Label>
+            <Form.Control 
+              name="body"
+              data-testid="input-body"
+              className="mb-2"
+              value={formik.values.body}
+              placeholder={t('addChannelModal.modalInput')}
+              ref={inputRef}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={fieldInvalid}
+              required
+            />
+            <Form.Label className="visually-hidden">{t('renameModal.inputLabel')}</Form.Label>
             <Form.Control.Feedback type="invalid">{validationError}</Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={() => onHide()}>
-            Отменить
+            {t('modalBtn.cancelBtn')}
           </Button>
           <Button type="submit" variant="primary" className="me-2">
-            Отправить
+            {t('modalBtn.sendBtn')}
           </Button>
         </Modal.Footer>
       </form>
