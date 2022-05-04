@@ -7,14 +7,15 @@ export default function DropChatButton({
 }) {
   const handleClick = channel.id === currentChat ? null : () => updateChannel(channel.id);
   const { t } = useTranslation('translation', { keyPrefix: 'chatPage.chatColumn' });
+  const variant = channel.id === currentChat ? 'secondary' : 'light';
 
   return (
-    <Dropdown as={ButtonGroup} className="flex-grow-0">
-      <Button onClick={handleClick} className="w-100 rounded-0 text-start">
+    <Dropdown as={ButtonGroup} className="d-flex">
+      <Button onClick={handleClick} variant={variant} className="w-100 rounded-0 text-start noFocus">
         <span className="me-1">#</span>
         {channel.name}
       </Button>
-      <Dropdown.Toggle split>
+      <Dropdown.Toggle split variant={variant} className="noFocus">
         <span className="visually-hidden">{t('changeChnlBtn')}</span>
       </Dropdown.Toggle>
       <Dropdown.Menu>

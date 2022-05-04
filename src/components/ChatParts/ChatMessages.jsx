@@ -47,7 +47,7 @@ export default function ChatMessages({
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
-        <div className="bg-light mb-4 p-3 shadow-sm small">
+        <div className="mb-4 p-3 shadow-sm">
           <p className="m-0">
             <b>
               #
@@ -79,11 +79,11 @@ export default function ChatMessages({
           }
           </div>
         </div>
-        <div className="mt-auto px-5 py-3">
-          <Form onSubmit={handleSendMessage} className="py-1 border rounded-2">
-            <Form.Group className="input-group has-validation d-flex">
-              <Form.Control value={text} onChange={handleChangeText} type="text" placeholder={t('messagePlaceholder')} className="border-0 p-0 ps-2" aria-label={t('messageAriaLabel')} ref={inputRef} />
-              <Button type="submit" disabled={btnDisabled} className="btn btn-group-vertical">
+        <div className="px-5 py-3 mt-auto">
+          <Form onSubmit={handleSendMessage}>
+            <Form.Group className="d-flex">
+              <Form.Control value={text} onChange={handleChangeText} type="text" placeholder={t('messagePlaceholder')} className="me-2" aria-label={t('messageAriaLabel')} ref={inputRef} />
+              <Button type="submit" disabled={btnDisabled}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
                   <path
                     fillRule="evenodd"

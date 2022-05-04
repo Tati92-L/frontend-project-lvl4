@@ -42,7 +42,6 @@ export default function AddChannelModal(props) {
           author: getUsername(),
         });
         onHide();
-        successMessage(t('toastNotification.createToast'));
       } catch (err) {
         setValidationError(err.message);
         setFieldInvalid(true);
@@ -82,7 +81,7 @@ export default function AddChannelModal(props) {
           <Button variant="secondary" className="me-2" onClick={() => onHide()}>
             {t('modalBtn.cancelBtn')}
           </Button>
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" onClick={() => successMessage(t('toastNotification.createToast'))}>
             {t('modalBtn.sendBtn')}
           </Button>
         </Modal.Footer>

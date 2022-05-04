@@ -27,11 +27,11 @@ function AuthProvider({ children }) {
 export default function App({ socket }) {
   return (
     <div className="d-flex flex-column h-100 bg-light">
-      <ToastifyProvider>
-        <AuthProvider>
-          <SocketContextProvider socket={socket}>
-            <Router>
-              <Header />
+      <AuthProvider>
+        <SocketContextProvider socket={socket}>
+          <Router>
+            <Header />
+            <ToastifyProvider>
               <Container className="p-3">
                 <Routes>
                   <Route path="/" element={<ChatPage />} />
@@ -40,10 +40,10 @@ export default function App({ socket }) {
                   <Route path="/signup" element={<SignUp />} />
                 </Routes>
               </Container>
-            </Router>
-          </SocketContextProvider>
-        </AuthProvider>
-      </ToastifyProvider>
+            </ToastifyProvider>
+          </Router>
+        </SocketContextProvider>
+      </AuthProvider>
     </div>
   );
 }

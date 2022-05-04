@@ -28,7 +28,6 @@ export default async (socket) => {
     },
   };
 
-
   return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>

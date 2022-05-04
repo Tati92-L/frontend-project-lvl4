@@ -9,7 +9,7 @@ export default {
       },
       loginPage: {
         loginTitle: 'Войти',
-        errorMessageLogin: 'Имя пользователя или пароль некорректны',
+        errorMessageLogin: 'Неверные имя пользователя или пароль',
         loginBtn: 'Войти',
         noAccount: 'Нет аккаунта?',
         registrationLink: 'Регистрация',
@@ -23,7 +23,7 @@ export default {
           usernameLogin: 'Ваш ник',
           passwordLogin: 'Пароль',
         },
-        networkError: 'Ошибка подключения',
+        networkError: 'Ошибка соединения',
       },
       signUpPage: {
         signUpTitle: 'Регистрация',
@@ -41,7 +41,7 @@ export default {
           passwordSignUp: 'Пароль',
           confirmPassword: 'Подтвердите пароль',
         },
-        networkError: 'Ошибка подключения',
+        networkError: 'Ошибка соединения',
       },
       chatPage: {
         chatColumn: {
