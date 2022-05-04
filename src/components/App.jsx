@@ -8,6 +8,7 @@ import AuthContext from '../contexts/index.jsx';
 import Header from './Header.jsx';
 import SignUp from './SignUp.jsx';
 import SocketContextProvider from './Socket.jsx';
+import ToastifyProvider from './Toastify.jsx';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(() => !!localStorage.getItem('userId'));
@@ -26,21 +27,23 @@ function AuthProvider({ children }) {
 export default function App({ socket }) {
   return (
     <div className="d-flex flex-column h-100 bg-light">
-      <AuthProvider>
-        <SocketContextProvider socket={socket}>
-          <Router>
-            <Header />
-            <Container className="p-3">
-              <Routes>
-                <Route path="/" element={<ChatPage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<NoMatch />} />
-                <Route path="/signup" element={<SignUp />} />
-              </Routes>
-            </Container>
-          </Router>
-        </SocketContextProvider>
-      </AuthProvider>
+      <ToastifyProvider>
+        <AuthProvider>
+          <SocketContextProvider socket={socket}>
+            <Router>
+              <Header />
+              <Container className="p-3">
+                <Routes>
+                  <Route path="/" element={<ChatPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="*" element={<NoMatch />} />
+                  <Route path="/signup" element={<SignUp />} />
+                </Routes>
+              </Container>
+            </Router>
+          </SocketContextProvider>
+        </AuthProvider>
+      </ToastifyProvider>
     </div>
   );
 }

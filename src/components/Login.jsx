@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
+import useToastify from '../hooks/useToastify.jsx';
 import routes from '../routes.js';
 import loginImg from '../img/img.js';
 
@@ -17,6 +18,7 @@ export default function Login() {
   const auth = useAuth();
 
   const { t } = useTranslation('translation', { keyPrefix: 'loginPage' });
+  const { errorMessage } = useToastify();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -46,6 +48,9 @@ export default function Login() {
           navigate(from);
         }
       } catch (err) {
+        if (err.message === 'Network Error') {
+          errorMessage(t('networkError'));
+        }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           const { from } = location.pathname || { from: { pathname: '/login' } };

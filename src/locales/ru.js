@@ -14,8 +14,7 @@ export default {
         noAccount: 'Нет аккаунта?',
         registrationLink: 'Регистрация',
         loginValidation: {
-          nameMinValid: 'Не менее 3 символов',
-          nameMaxValid: 'Не больше 20 символов',
+          minMaxLength: 'От 3 до 20 символов',
           requiredName: 'Имя пользователя не указано',
           passwordMinValid: 'Не менее 6 символов',
           requiredPassword: 'Пароль не указан',
@@ -24,14 +23,14 @@ export default {
           usernameLogin: 'Ваш ник',
           passwordLogin: 'Пароль',
         },
+        networkError: 'Ошибка подключения',
       },
       signUpPage: {
         signUpTitle: 'Регистрация',
         errorMessageSignUp: 'Пользователь с таким именем уже существует!',
         signUpBtn: 'Зарегестрироваться',
         signUpValidation: {
-          nameMinValid: 'Не менее 3 символов',
-          nameMaxValid: 'Не больше 20 символов',
+          minMaxLength: 'От 3 до 20 символов',
           requiredName: 'Имя пользователя не указано',
           passwordMinValid: 'Не менее 6 символов',
           requiredPassword: 'Пароль не указан',
@@ -42,6 +41,7 @@ export default {
           passwordSignUp: 'Пароль',
           confirmPassword: 'Подтвердите пароль',
         },
+        networkError: 'Ошибка подключения',
       },
       chatPage: {
         chatColumn: {
@@ -65,8 +65,7 @@ export default {
       modalElements: {
         modalValid: {
           modalRequired: 'Обязательное поле',
-          modalMin: 'Не менее 3 символов',
-          modalMax: 'Не более 20 символов',
+          minMaxLength: 'От 3 до 20 символов',
           uniqueChnlName: 'Должно быть уникальным',
         },
         modalBtn: {
@@ -87,6 +86,11 @@ export default {
         removeModal: {
           modalTitle: 'Удалить канал',
           removeQuestion: 'Уверены?',
+        },
+        toastNotification: {
+          createToast: 'Канал создан',
+          renameToast: 'Канал переименован',
+          removeToast: 'Канал удален',
         },
       },
     },

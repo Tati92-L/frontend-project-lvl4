@@ -2,16 +2,19 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useSocket from '../hooks/useSocket.jsx';
+import useToastify from '../hooks/useToastify.jsx';
 
 export default function RemoveChannelModal(props) {
   const { onHide, modalInfo } = props;
   const { id } = modalInfo.item;
   const { removeChannel } = useSocket();
   const { t } = useTranslation('translation', { keyPrefix: 'modalElements' });
+  const { successMessage } = useToastify();
 
   const handleRemoveChannel = () => {
     removeChannel(id);
     onHide();
+    successMessage(t('toastNotification.removeToast'));
   };
 
   return (

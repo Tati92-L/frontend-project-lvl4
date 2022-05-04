@@ -5,6 +5,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import useSocket from '../hooks/useSocket.jsx';
+import useToastify from '../hooks/useToastify.jsx';
 import { selectors as channelSelectors } from '../slices/channelsSlice.js';
 
 export default function RenameChannelModal(props) {
@@ -13,6 +14,7 @@ export default function RenameChannelModal(props) {
   const { renameChannel } = useSocket();
   const inputRef = useRef();
   const { t } = useTranslation('translation', { keyPrefix: 'modalElements' });
+  const { successMessage } = useToastify();
 
   const [fieldInvalid, setFieldInvalid] = useState(false);
   const [validationError, setValidationError] = useState(null);
@@ -39,6 +41,7 @@ export default function RenameChannelModal(props) {
         const { body } = values;
         renameChannel({ id, name: body });
         onHide();
+        successMessage(t('toastNotification.renameToast'));
       } catch (err) {
         setValidationError(err.message);
         setFieldInvalid(true);
@@ -49,7 +52,7 @@ export default function RenameChannelModal(props) {
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
-  }, []);
+  }, [name]);
 
   return (
     <Modal show>

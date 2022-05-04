@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
+import useToastify from '../hooks/useToastify.jsx';
 import routes from '../routes.js';
 import signUpImg from '../img/signup.js';
 
@@ -16,13 +17,14 @@ export default function SignUp() {
   const navigate = useNavigate();
   const auth = useAuth();
   const { t } = useTranslation('translation', { keyPrefix: 'signUpPage' });
+  const { errorMessage } = useToastify();
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   const userSchema = object().shape({
-    username: string().min(3, t('signUpValidation.nameMinValid')).max(20, t('signUpValidation.nameMaxValid')).required(t('signUpValidation.requiredName')),
+    username: string().min(3, t('signUpValidation.minMaxLength')).max(20, t('signUpValidation.minMaxLength')).required(t('signUpValidation.requiredName')),
     password: string().min(6, t('signUpValidation.passwordMinValid')).required(t('signUpValidation.requiredPassword')),
     confirmPassword: string().oneOf(['password', null], t('signUpValidation.passwordMatch')),
   });
@@ -47,6 +49,9 @@ export default function SignUp() {
           navigate(from);
         }
       } catch (err) {
+        if (err.message === 'Network Error') {
+          errorMessage(t('networkError'));
+        }
         if (err.isAxiosError && err.response.status === 409) {
           setAuthFailed(true);
           const { from } = location.pathname || { from: { pathname: '/signup' } };

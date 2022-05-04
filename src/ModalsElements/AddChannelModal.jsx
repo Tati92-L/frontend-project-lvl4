@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectors as channelSelectors } from '../slices/channelsSlice.js';
 import useSocket from '../hooks/useSocket.jsx';
+import useToastify from '../hooks/useToastify.jsx';
 // import useAuth from '../hooks/useAuth.jsx';
 // eslint-disable-next-line import/no-cycle
 import { getUsername } from '../components/ChatParts/ChatPage.jsx';
@@ -16,15 +17,15 @@ export default function AddChannelModal(props) {
   const { createNewChannel } = useSocket();
   const [fieldInvalid, setFieldInvalid] = useState(false);
   const [validationError, setValidationError] = useState('');
-  // const { getUsername } = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation('translation', { keyPrefix: 'modalElements' });
+  const { successMessage } = useToastify();
 
   const channels = useSelector((state) => channelSelectors.selectAll(state));
   const channelsNames = channels.map((cnl) => cnl.name);
 
   const userSchema = object().shape({
-    body: string().min(3, t('modalValid.modalMin')).max(20, t('modalValid.modalMax')).required(t('modalValid.modalRequired'))
+    body: string().min(3, t('modalValid.minMaxLength')).max(20, t('modalValid.minMaxLength')).required(t('modalValid.modalRequired'))
       .notOneOf(channelsNames, t('modalValid.uniqueChnlName')),
   });
 
@@ -41,6 +42,7 @@ export default function AddChannelModal(props) {
           author: getUsername(),
         });
         onHide();
+        successMessage(t('toastNotification.createToast'));
       } catch (err) {
         setValidationError(err.message);
         setFieldInvalid(true);
