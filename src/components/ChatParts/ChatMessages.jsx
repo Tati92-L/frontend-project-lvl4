@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Col, Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 
 export default function ChatMessages({
   messages, sendMessage, currentChannelId, currentChannelName,
@@ -28,7 +29,7 @@ export default function ChatMessages({
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    sendMessage(text, currentChannelId, getUsername());
+    sendMessage(filter.clean(text), currentChannelId, getUsername());
     setText('');
     setBtnDisabled(true);
   };
