@@ -20,13 +20,15 @@ export default async (socket) => {
   filter.add(filter.getDictionary('en'));
 
   const rollbarConfig = {
-    accessToken: '59e25b3382c34f3b92ce4aed5ae7ea14',
+    accessToken: `${process.env.ROLLBAR_ACCESS_TOKEN}`,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
       environment: 'production',
     },
   };
+
+  // `${process.env.ROLLBAR_ACCESS_TOKEN}`,
 
   return (
     <RollbarProvider config={rollbarConfig}>
