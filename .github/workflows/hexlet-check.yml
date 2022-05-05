@@ -23,6 +23,9 @@ jobs:
 
       - name: Rollbar deploy
         uses: rollbar/github-deploy-action@2.1.1
+        with:
+          environment: 'production'
+          version: ${{ github.sha }}
         env:
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
       - name: Hexlet project check
