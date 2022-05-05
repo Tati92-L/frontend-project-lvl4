@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Rollbar deploy
-        uses: rollbar/github-deploy-action@2.1.1with
+        uses: rollbar/github-deploy-action@2.1.1
       - name: Hexlet project check
         uses: hexlet/project-action@release
         with:
