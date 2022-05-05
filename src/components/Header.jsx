@@ -6,16 +6,9 @@ import useAuth from '../hooks/useAuth.jsx';
 
 function AuthButton() {
   const { loggedIn, logOut } = useAuth();
-  const location = useLocation();
   const { t } = useTranslation('translation', { keyPrefix: 'header' });
 
-  return loggedIn ? (
-    <Button onClick={logOut}>{t('logoutBtn')}</Button>
-  ) : (
-    <Button as={Link} to="/login" state={{ from: location }}>
-      Войти
-    </Button>
-  );
+  return loggedIn ? <Button onClick={logOut}>{t('logoutBtn')}</Button> : null;
 }
 
 export default function Header() {
@@ -27,7 +20,7 @@ export default function Header() {
         <Navbar.Brand as={Link} to="/">
           {t('logoutHead')}
         </Navbar.Brand>
-        <AuthButton className="btn btn-primary" />
+        <AuthButton />
       </Container>
     </Navbar>
   );
