@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Card,
+  Alert,
 } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -85,11 +86,11 @@ export default function Login() {
                     <h2>{t('loginTitle')}</h2>
                   </Card.Title>
                   <Form onSubmit={formik.handleSubmit} className="form-floating">
-                    {/* {
+                    {
                       authFailed
-                        ? <Alert variant="danger">{t('incorrectDataAlert')}</Alert>
+                        ? <Alert variant="danger">{t('errorMessageLogin')}</Alert>
                         : null
-                    } */}
+                    }
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         type="text"
@@ -105,11 +106,11 @@ export default function Login() {
                       />
                       <Form.Label htmlFor="username">{t('loginForm.usernameLogin')}</Form.Label>
 
-                      {/* {formik.touched.username && formik.errors.username ? (
+                      {formik.touched.username && formik.errors.username ? (
                         <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
-                          {formik.errors.username}
+                          {t('errorMessageLogin')}
                         </Form.Control.Feedback>
-                      ) : null} */}
+                      ) : null}
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
@@ -125,14 +126,11 @@ export default function Login() {
                       />
                       <Form.Label htmlFor="password">{t('loginForm.passwordLogin')}</Form.Label>
 
-                      {/* {formik.touched.password && formik.errors.password ? (
+                      {formik.touched.password && formik.errors.password ? (
                         <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
-                          {formik.errors.password}
+                          {t('errorMessageLogin')}
                         </Form.Control.Feedback>
-                      ) : null} */}
-
-                      <Form.Control.Feedback type="invalid">{t('errorMessageLogin')}</Form.Control.Feedback>
-
+                      ) : null}
                     </Form.Group>
                     <Button type="submit" variant="outline-primary" className="w-100 mb-3">
                       {t('loginBtn')}
