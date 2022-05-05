@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { useFormik } from 'formik';
-import { Button, Container, Form, Row, Col, Card } from 'react-bootstrap';
+import {
+  Button,
+  Container,
+  Form,
+  Row,
+  Col,
+  Card,
+} from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
@@ -77,7 +84,7 @@ export default function Login() {
                   <Card.Title className="text-center mb-4">
                     <h2>{t('loginTitle')}</h2>
                   </Card.Title>
-                  <Form onSubmit={formik.handleSubmit} cclassName="form-floating">
+                  <Form onSubmit={formik.handleSubmit} className="form-floating">
                     {/* {
                       authFailed
                         ? <Alert variant="danger">{t('incorrectDataAlert')}</Alert>
@@ -114,7 +121,6 @@ export default function Login() {
                         autoComplete="current-password"
                         required
                         id="password"
-                        type="password"
                         isInvalid={authFailed}
                       />
                       <Form.Label htmlFor="password">{t('loginForm.passwordLogin')}</Form.Label>
