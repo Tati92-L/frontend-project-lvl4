@@ -28,7 +28,7 @@ export default {
       signUpPage: {
         signUpTitle: 'Регистрация',
         errorMessageSignUp: 'Пользователь с таким именем уже существует!',
-        signUpBtn: 'Зарегестрироваться',
+        signUpBtn: 'Зарегистрироваться',
         signUpValidation: {
           minMaxLength: 'От 3 до 20 символов',
           requiredName: 'Имя пользователя не указано',

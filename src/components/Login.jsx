@@ -39,12 +39,10 @@ export default function Login() {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(routes.loginPath(), values);
-        // if (response.status === 200) {
         localStorage.setItem('userId', JSON.stringify(response.data));
         auth.logIn();
         setAuthFailed(false);
         navigate('/');
-        // }
       } catch (err) {
         if (err.message === 'Network Error') {
           errorMessage(t('networkError'));

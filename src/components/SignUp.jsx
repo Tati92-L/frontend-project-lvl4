@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { useFormik } from 'formik';
-import { Button, Container, Form, Row, Col, Card } from 'react-bootstrap';
+import {
+  Button, Container, Form, Row, Col, Card, Alert,
+} from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 import useToastify from '../hooks/useToastify.jsx';
 import routes from '../routes.js';
@@ -13,7 +15,6 @@ import signUpImg from '../img/signup.js';
 export default function SignUp() {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
   const auth = useAuth();
   const { t } = useTranslation('translation', { keyPrefix: 'signUpPage' });
@@ -41,21 +42,16 @@ export default function SignUp() {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(routes.signUpPath(), values);
-        if (response.status === 200) {
-          localStorage.setItem('userId', JSON.stringify(response.data));
-          auth.logIn();
-          setAuthFailed(false);
-          const { from } = location.state || { from: { pathname: '/' } };
-          navigate(from);
-        }
+        localStorage.setItem('userId', JSON.stringify(response.data));
+        auth.logIn();
+        setAuthFailed(false);
+        navigate('/');
       } catch (err) {
         if (err.message === 'Network Error') {
           errorMessage(t('networkError'));
         }
         if (err.isAxiosError && err.response.status === 409) {
           setAuthFailed(true);
-          const { from } = location.pathname || { from: { pathname: '/signup' } };
-          navigate(from);
           inputRef.current.select();
           return;
         }
@@ -79,11 +75,11 @@ export default function SignUp() {
                     <h2>{t('signUpTitle')}</h2>
                   </Card.Title>
                   <Form className="form-floating" onSubmit={formik.handleSubmit}>
-                    {/* {
-                    registrationFailed
+                    {
+                    authFailed
                       ? <Alert variant="danger">{t('errorMessageSignUp')}</Alert>
                       : null
-                  } */}
+                  }
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         type="text"
@@ -98,11 +94,11 @@ export default function SignUp() {
                       />
                       <Form.Label htmlFor="username">{t('signUpForm.usernameSignUp')}</Form.Label>
 
-                      {/* {formik.touched.username && formik.errors.username ? (
+                      {formik.touched.username && formik.errors.username ? (
                         <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
                           {formik.errors.username}
                         </Form.Control.Feedback>
-                      ) : null} */}
+                      ) : null}
                     </Form.Group>
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
@@ -116,13 +112,11 @@ export default function SignUp() {
                         isInvalid={authFailed}
                       />
                       <Form.Label htmlFor="password">{t('signUpForm.passwordSignUp')}</Form.Label>
-
-                      {/* {formik.touched.password && formik.errors.password ? (
+                      {formik.touched.password && formik.errors.password ? (
                         <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
                           {formik.errors.password}
                         </Form.Control.Feedback>
-                      ) : null} */}
-                      <Form.Control.Feedback type="invalid">{t('errorMessageSignUp')}</Form.Control.Feedback>
+                      ) : null}
                     </Form.Group>
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
@@ -137,12 +131,11 @@ export default function SignUp() {
                         ref={inputRef}
                       />
                       <Form.Label htmlFor="username">{t('signUpForm.confirmPassword')}</Form.Label>
-
-                      {/* {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                      {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
                         <Form.Control.Feedback type="invalid" style={{ display: 'block' }}>
                           {formik.errors.confirmPassword}
                         </Form.Control.Feedback>
-                      ) : null} */}
+                      ) : null}
                     </Form.Group>
                     <Button className="w-100" type="submit" variant="outline-primary">
                       {t('signUpBtn')}
