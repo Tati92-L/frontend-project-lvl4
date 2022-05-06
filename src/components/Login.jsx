@@ -61,7 +61,7 @@ export default function Login() {
         }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          const { from } = location.pathname || { from: { pathname: '/login' } };
+          const { from } = location.pathname || { from: { pathname: '/' } };
           navigate(from);
           inputRef.current.select();
           return;
