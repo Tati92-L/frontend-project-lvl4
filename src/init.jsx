@@ -20,7 +20,7 @@ export default async (socket) => {
   filter.add(filter.getDictionary('en'));
 
   const rollbarConfig = {
-    // accessToken: `${process.env.ROLLBAR_ACCESS_TOKEN}`,
+    accessToken: `${process.env.ROLLBAR_ACCESS_TOKEN}`,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {

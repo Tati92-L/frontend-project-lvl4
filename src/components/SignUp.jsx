@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { object, string } from 'yup';
+import { object, string, ref } from 'yup';
 import { useFormik } from 'formik';
 import {
   Button, Container, Form, Row, Col, Card, Alert,
@@ -27,7 +27,7 @@ export default function SignUp() {
   const userSchema = object().shape({
     username: string().min(3, t('signUpValidation.minMaxLength')).max(20, t('signUpValidation.minMaxLength')).required(t('signUpValidation.requiredName')),
     password: string().min(6, t('signUpValidation.passwordMinValid')).required(t('signUpValidation.requiredPassword')),
-    confirmPassword: string().oneOf(['password', null], t('signUpValidation.passwordMatch')),
+    confirmPassword: string().oneOf([ref('password'), null], t('signUpValidation.passwordMatch')),
   });
 
   const formik = useFormik({
