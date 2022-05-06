@@ -1,15 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { object, string } from 'yup';
 import { useFormik } from 'formik';
-import {
-  Button,
-  Container,
-  Form,
-  Row,
-  Col,
-  Card,
-  Alert,
-} from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
@@ -47,12 +39,12 @@ export default function Login() {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(routes.loginPath(), values);
-        if (response.status === 200) {
-          localStorage.setItem('userId', JSON.stringify(response.data));
-          auth.logIn();
-          setAuthFailed(false);
-          navigate('/');
-        }
+        // if (response.status === 200) {
+        localStorage.setItem('userId', JSON.stringify(response.data));
+        auth.logIn();
+        setAuthFailed(false);
+        navigate('/');
+        // }
       } catch (err) {
         if (err.message === 'Network Error') {
           errorMessage(t('networkError'));
@@ -60,7 +52,7 @@ export default function Login() {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
-          navigate('/');
+          navigate('/login');
           return;
         }
         throw err;
@@ -83,11 +75,7 @@ export default function Login() {
                     <h2>{t('loginTitle')}</h2>
                   </Card.Title>
                   <Form onSubmit={formik.handleSubmit} className="form-floating">
-                    {
-                      authFailed
-                        ? <Alert variant="danger">{t('errorMessageLogin')}</Alert>
-                        : null
-                    }
+                    {authFailed ? <Alert variant="danger">{t('errorMessageLogin')}</Alert> : null}
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         type="text"
@@ -138,10 +126,7 @@ export default function Login() {
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>
-                  {t('noAccount')}
-                  {' '}
-                </span>
+                <span>{t('noAccount')} </span>
                 <Link to="/signup">{t('registrationLink')}</Link>
               </div>
             </Card.Footer>
