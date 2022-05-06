@@ -52,7 +52,7 @@ export default function Login() {
           localStorage.setItem('userId', JSON.stringify(response.data));
           setAuthFailed(false);
           auth.logIn();
-          const { from } = { from: { pathname: '/' } } || location.state;
+          const { from } = { from: { pathname: '/' } };
           navigate(from);
         }
       } catch (err) {
@@ -61,7 +61,7 @@ export default function Login() {
         }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          const { from } = location.pathname || { from: { pathname: '/' } };
+          const { from } = location.pathname || { from: { pathname: '/login' } };
           navigate(from);
           inputRef.current.select();
           return;
