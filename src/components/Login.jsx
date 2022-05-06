@@ -49,8 +49,8 @@ export default function Login() {
         const response = await axios.post(routes.loginPath(), values);
         if (response.status === 200) {
           localStorage.setItem('userId', JSON.stringify(response.data));
-          setAuthFailed(false);
           auth.logIn();
+          setAuthFailed(false);
           navigate('/');
         }
       } catch (err) {
@@ -59,8 +59,8 @@ export default function Login() {
         }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          navigate('/login');
           inputRef.current.select();
+          navigate('/');
           return;
         }
         throw err;
