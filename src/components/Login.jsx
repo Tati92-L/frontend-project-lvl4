@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 import useToastify from '../hooks/useToastify.jsx';
 import routes from '../routes.js';
@@ -21,7 +21,6 @@ import loginImg from '../img/img.js';
 export default function Login() {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
   const auth = useAuth();
 
@@ -52,8 +51,7 @@ export default function Login() {
           localStorage.setItem('userId', JSON.stringify(response.data));
           setAuthFailed(false);
           auth.logIn();
-          const { from } = { from: { pathname: '/' } };
-          navigate(from);
+          navigate('/');
         }
       } catch (err) {
         if (err.message === 'Network Error') {
@@ -61,8 +59,7 @@ export default function Login() {
         }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          const { from } = location.pathname || { from: { pathname: '/login' } };
-          navigate(from);
+          navigate('/login');
           inputRef.current.select();
           return;
         }
